@@ -1,0 +1,25 @@
+{
+  "name": "Mooment",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Monitor the time you spend on the different websites.",
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "<all_urls>",
+    "storage",
+    "tabs"
+  ],
+  "background": {
+    "scripts": [
+      "js/namespace.js",
+      "js/user.js",
+      "js/jquery.js",
+      "js/cors.js",
+      "js/routes.js",
+      "js/bootstrap.js"
+    ],
+    "persistent": false
+  }
+}
