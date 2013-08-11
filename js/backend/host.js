@@ -45,6 +45,7 @@ Mooment.host = (function () {
       }
     }
     // Add the new recording
+    // TODO: don't record anything shorter than 5 seconds
     recordings.push({
       "start": activeRecord[ACTIVE_HOST].start,
       "finish": now.toISOString()

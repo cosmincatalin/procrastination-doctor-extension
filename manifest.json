@@ -19,6 +19,7 @@
       "js/backend/cors.js",
       "js/backend/util.js",
       "js/backend/host.js",
+      "js/backend/data.js",
       "js/backend/monitor.js",
       "js/backend/routes.js",
       "js/backend/bootstrap.js"

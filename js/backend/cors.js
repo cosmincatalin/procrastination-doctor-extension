@@ -11,6 +11,9 @@ Mooment.cors = {
       },
       accept: "application/json",
       success: function(data, status, xhr) {
+        if ( !callback ) {
+          return;
+        }
         callback(null, data);
       },
       error: function(xhr, status, error) {
@@ -32,15 +35,26 @@ Mooment.cors = {
             };
           }
           response.status = xhr.status;
+          if ( !callback ) {
+            return;
+          }
           callback(response);
         } else {
-          callback({ "errors": [ error], "status": status });
+          if ( !callback ) {
+            return;
+          }
+          callback({ "errors": [error], "status": status });
         }
       },
       xhrFields: {
         withCredentials: true
       }
     };
+    // Inject the user token if it is available
+    var token = Mooment.user.getToken();
+    if ( typeof token !== "undefined" ) {
+      attrs.headers.token = token;
+    }
     if (http_method === "POST" || http_method === "PUT") {
       attrs.data = JSON.stringify(data);
       attrs.dataType = "json";

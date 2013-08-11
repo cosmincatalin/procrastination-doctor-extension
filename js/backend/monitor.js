@@ -5,7 +5,6 @@ Mooment.monitor = (function() {
       if (changeInfo.status !== "complete" ) {
         return;
       }
-      console.log("Tab updated");
       try {
         Mooment.host.setActive(Mooment.util.getSite(tab.url));
       // Silently ignore if the url fails to be parsed
