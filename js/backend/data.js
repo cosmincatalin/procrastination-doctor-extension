@@ -24,8 +24,15 @@ Mooment.data = (function () {
     });
   }
 
-  function extractData(callback) {
-    chrome.storage.local.get(null, filterData.bind(this, callback));
+  function truncateData(callback, recordings) {
+    var recording;
+    for (recording in recordings) {
+      console.log(recording)
+    }
+  }
+
+  function extractData(callback, executor) {
+    chrome.storage.local.get(null, executor.bind(this, callback));
   }
 
   function send(callback, data) {
@@ -34,7 +41,10 @@ Mooment.data = (function () {
 
   return {
     send: function(callback) {
-      extractData(send.bind(this, callback));
+      extractData(send.bind(this, callback), filterData);
+    },
+    truncate: function(callback) {
+      extractData(callback, truncateData);
     }
   };
 }());

@@ -6,7 +6,7 @@ Mooment.monitor = (function() {
     console.log("Executing send task");
     // TODO: Think about implementing Q to avoid callback hell
     Mooment.data.send(function() {
-      console.log( arguments );
+      Mooment.data.truncate();
     });
   }
 
