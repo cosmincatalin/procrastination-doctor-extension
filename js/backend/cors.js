@@ -57,7 +57,6 @@ Mooment.cors = {
     }
     if (http_method === "POST" || http_method === "PUT") {
       attrs.data = JSON.stringify(data);
-      attrs.dataType = "json";
       attrs.processData = false;
       attrs.contentType = "application/json";
     }
