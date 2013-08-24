@@ -4,6 +4,10 @@ Mooment.monitor = (function() {
 
   function send(callback) {
     console.log("Executing send task");
+    // TODO: Think about implementing Q to avoid callback hell
+    Mooment.data.send(function() {
+      console.log( arguments );
+    });
   }
 
   /**
