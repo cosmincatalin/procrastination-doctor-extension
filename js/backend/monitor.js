@@ -41,7 +41,7 @@ Mooment.monitor = (function() {
      * Start the recurring task that sends the statistics back to the server
      * TODO: Remove hardcoding
      */
-    interval = setInterval(send, 1000 * 30 );
+    interval = setInterval(send, 1000 * 60 );
     // TODO: Finally call the callback function to signal that starting has completed
   }
 

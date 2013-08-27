@@ -1,14 +1,15 @@
 Mooment.data = (function () {
 
+  var reKey = /\[RECORDED-HOST\](.*)/;
+
   function filterData(callback, recordings) {
     var host,
       filteredRecordings = [],
-      re = /\[RECORDED-HOST\](.*)/,
       hostParts,
       intervals;
     for (host in recordings) {
       try {
-        hostParts = host.match(re);
+        hostParts = host.match(reKey);
         if ( hostParts ) {
           intervals = JSON.parse(recordings[host]);
           filteredRecordings.push({
@@ -25,9 +26,13 @@ Mooment.data = (function () {
   }
 
   function truncateData(callback, recordings) {
-    var recording;
+    var recording,
+      recordingsToRemove = [];
     for (recording in recordings) {
-      console.log(recording)
+      recordingsToRemove.push(recording);
+    }
+    if ( recordingsToRemove.length > 0 ) {
+      chrome.storage.local.remove( recordingsToRemove, callback );
     }
   }
 
