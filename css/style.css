@@ -1,0 +1,70 @@
+.button {
+	color: #F0F0F0;
+	-webkit-font-smoothing: antialiased;
+	font-family: 'Source Code Pro', sans-serif;
+	font-size: 14px;
+	padding-bottom: 8px;
+	padding-top: 8px;
+	padding-left: 13px;
+	padding-right: 13px;
+	border: none;
+	letter-spacing: 0.1em;
+	cursor: pointer;
+	margin: 0px;
+}
+
+.button.basic {
+	background-color: #64908A;
+}
+
+.button.basic:hover {
+	background-color: #59807B;
+}
+
+.button.important {
+	background-color: #CC2A41;
+}
+
+.button.important:hover {
+	background-color: #B6253A;
+}
+
+.button.other {
+	background-color: #424254;
+}
+
+.button.other:hover {
+	background-color: #3B3B4B;
+}
+
+a {
+	text-decoration: none;
+	-webkit-font-smoothing: antialiased;
+	font-family: 'Source Code Pro', sans-serif;
+	font-size: 14px;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.text {
+	padding: 5px;
+	border: 1px solid #CCC;
+	font-size: 14px;
+	-webkit-font-smoothing: antialiased;
+	font-family: 'Source Code Pro', sans-serif;
+	font-weight: bold;
+	outline: none;
+	border-color: #4D90FE;
+	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.text:hover {
+	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.3);	
+}
+
+.text:focus {
+	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.3);	
+}
+
