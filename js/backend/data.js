@@ -32,7 +32,9 @@ Mooment.data = (function () {
       recordingsToRemove.push(recording);
     }
     if ( recordingsToRemove.length > 0 ) {
-      chrome.storage.local.remove( recordingsToRemove, callback );
+      if ( host.match( reKey ) ) {
+        chrome.storage.local.remove( recordingsToRemove, callback );
+      }
     }
   }
 
