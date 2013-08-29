@@ -29,12 +29,12 @@ Mooment.data = (function () {
     var recording,
       recordingsToRemove = [];
     for (recording in recordings) {
-      recordingsToRemove.push(recording);
+      if ( recording.match( reKey ) ) {
+        recordingsToRemove.push(recording);
+      }
     }
     if ( recordingsToRemove.length > 0 ) {
-      if ( host.match( reKey ) ) {
-        chrome.storage.local.remove( recordingsToRemove, callback );
-      }
+      chrome.storage.local.remove( recordingsToRemove, callback );
     }
   }
 

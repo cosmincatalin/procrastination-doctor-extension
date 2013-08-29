@@ -1,3 +1,8 @@
+/**
+ * Styles should be converted in the future to an oo style system
+ * especially if Chrome start using stylus or something similar
+ */
+
 .button {
 	color: #F0F0F0;
 	-webkit-font-smoothing: antialiased;
@@ -38,6 +43,7 @@
 }
 
 a {
+	color: #682D60;
 	text-decoration: none;
 	-webkit-font-smoothing: antialiased;
 	font-family: 'Source Code Pro', sans-serif;
@@ -54,10 +60,46 @@ a:hover {
 	font-size: 14px;
 	-webkit-font-smoothing: antialiased;
 	font-family: 'Source Code Pro', sans-serif;
-	font-weight: bold;
 	outline: none;
 	border-color: #4D90FE;
 	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.text.glow {
+	-webkit-animation-name: unauthenticated;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-timing-function: ease;
+	-webkit-animation-iteration-count: 1;	
+	-webkit-animation-direction: normal;
+	-webkit-animation-delay: 0;
+	-webkit-animation-play-state: running;
+	-webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes unauthenticated {
+	0% {
+		-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+	}
+
+	25% {
+		-webkit-box-shadow: inset 0px 0px 7px rgba(255, 0, 0, 1);
+	}
+
+	50% {
+		-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+	}
+
+	75% {
+		-webkit-box-shadow: inset 0px 0px 7px rgba(255, 0, 0, 1);
+	}
+
+	100% {
+		-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);	
+	}
+}
+
+.text.error {
+	border-color: red;
 }
 
 .text:hover {
@@ -68,3 +110,38 @@ a:hover {
 	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.3);	
 }
 
+.last-input {
+	margin-bottom: 10px;
+}
+
+.button.margin-fix {
+	margin-left: 2px;
+}
+
+.error-indicator {
+	display: none;
+	background: url('/images/error.ico') 50% 50% no-repeat;
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 16px;
+	height: 16px;
+}
+
+.reset-indicator {
+	background: url('/images/question.ico') 50% 50% no-repeat;
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.form-row {
+	position: relative;
+}
+
+#password-error {
+	right: 30px;
+}

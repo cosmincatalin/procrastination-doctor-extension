@@ -1,4 +1,9 @@
-<input type="text" class="text" id="email" />
-<input type="password" class="text" id="password" />
-<input type="button" id="login" value="LOG IN" class="button basic" title="Log in using your email and password" />
+<div class="form-row">
+	<input type="text" class="text" id="email" placeholder="Email" />
+</div>
+<div class="form-row">
+	<input type="password" id="password" class="text last-input" placeholder="Password" title="If you're having problems remembering your password you can use the 'Reset Password' icon"/>
+	<div class="reset-indicator" id="goToReset" title="Click here if you have forgotten your password"></div>
+</div>
+<input type="button" id="login" value="LOG IN" class="button basic margin-fix" title="Log in and let the stats flow in :)" />
 <a href="#" id="goToRegister">Register</a>

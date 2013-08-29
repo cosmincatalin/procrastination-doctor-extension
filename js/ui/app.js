@@ -23,6 +23,36 @@ function init() {
     });
   };
 
+  var goToReset = function() {
+    $.get("js/ui/templates/reset.html", function(template) {
+      powerOffLogin();
+      $("body").html(Mustache.render(template));
+      powerOnReset());
+    });
+  };
+
+  var powerOffReset = function() {
+    $("#reset").unbind("click");
+    $("#goToLogin").unbind("click");
+  };
+
+  var powerOnReset = function() {
+    $("#reset").click(function () {
+      Mooment.extension.user.reset({ "email": $("#email").val() }, function(err, response){
+        if (err) {
+          // TODO: Handle the callback errors gracefully
+          console.log(err);
+          return;
+        }
+        console.log("success reset");
+        // At this point, if the email was a Gmail address,
+        // the extension should be closed and Gmail opened automatically
+        // Otherwise, just show an explinatory email
+      });
+    });
+    $("#goToLogin").click(goToLogin);
+  };
+
   var powerOffRegister = function() {
     $("#register").unbind("click");
     $("#goToLogin").unbind("click");
@@ -37,7 +67,7 @@ function init() {
           return;
         }
         console.log("success register");
-        goToLogin()
+        goToLogin();
       });
     });
     $("#goToLogin").click(goToLogin);
@@ -54,6 +84,7 @@ function init() {
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
+          $('.text').addClass('glow');
           return;
         }
         // Now that we have the token from the authentication, we need to save it
@@ -63,6 +94,7 @@ function init() {
       });
     });
     $("#goToRegister").click(goToRegister);
+    $("#goToReset").click(goToReset);
   };
 
   $.get("js/ui/templates/login.html", function(template) {

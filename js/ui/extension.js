@@ -25,6 +25,14 @@ Mooment.extension = (function () {
     });
   }
 
+  function register(credentials, callback) {
+    chrome.runtime.sendMessage({ "controller": "user", "action": "register", "params": credentials }, function(envelopedResponse) {
+      if (callback) {
+        callback(envelopedResponse.err, envelopedResponse.response);
+      }
+    });
+  }
+
   /**
    * Saves the user token in the persistent storage and also caches it.
    * The callback to this operation is optional
@@ -41,7 +49,8 @@ Mooment.extension = (function () {
     startMonitoring: startMonitoring,
     user: {
       authenticate: authenticate,
-      setToken: setToken
+      setToken: setToken,
+      register: register
     }
   };
 }());

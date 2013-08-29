@@ -35,11 +35,16 @@ Mooment.user = (function () {
     chrome.storage.sync.get("token",callback);
   }
 
+  function register(credentials, callback) {
+    Mooment.cors.makeRequest("POST", "user", credentials, callback);
+  }
+
   return {
     authenticate: authenticate,
     setToken: setToken,
     readToken: readToken,
     cacheToken: cacheToken,
-    getToken: getToken
+    getToken: getToken,
+    register: register
   };
 }());
