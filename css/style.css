@@ -141,7 +141,3 @@ a:hover {
 .form-row {
 	position: relative;
 }
-
-#password-error {
-	right: 30px;
-}

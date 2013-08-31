@@ -45,12 +45,24 @@ Mooment.extension = (function () {
     });
   }
 
+  function isLoggedIn(callback) {
+    chrome.runtime.sendMessage({ "controller": "user", "action": "getToken" }, function(envelopedResponse) {
+      if (callback) {
+        callback(
+          envelopedResponse.err,
+          typeof envelopedResponse.response === "string" && envelopedResponse.response.length > 0 ? true : false
+        );
+      }
+    });
+  }
+
   return {
     startMonitoring: startMonitoring,
     user: {
       authenticate: authenticate,
       setToken: setToken,
-      register: register
+      register: register,
+      isLoggedIn: isLoggedIn
     }
   };
 }());

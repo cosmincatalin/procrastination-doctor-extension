@@ -7,6 +7,19 @@ $("document").ready(init);
  */
 function init() {
 
+  var goToMain = function() {
+    $.get("js/ui/templates/main.html", function(template) {
+      powerOffLogin();
+      $("body").html(Mustache.render(template));
+      powerOnMain();
+    });
+  };
+
+  var powerOnMain = function() {
+    $("#logout").click(function () {
+    });
+  };
+
   var goToLogin = function() {
     $.get("js/ui/templates/login.html", function(template) {
       powerOffRegister();
@@ -27,7 +40,7 @@ function init() {
     $.get("js/ui/templates/reset.html", function(template) {
       powerOffLogin();
       $("body").html(Mustache.render(template));
-      powerOnReset());
+      powerOnReset();
     });
   };
 
@@ -60,9 +73,18 @@ function init() {
 
   var powerOnRegister = function() {
     $("#register").click(function () {
+      $(".error-indicator").hide();
       Mooment.extension.user.register({ "email": $("#email").val(), "password": $("#password").val() }, function(err, response){
+        var i;
         if (err) {
-          // TODO: Handle the callback errors gracefully
+          for ( i in err.errors) {
+            if (err.errors[i].code === 1045) {
+              $("#password-error").attr("title", err.errors[i].msg).show(500);
+            }
+            if (err.errors[i].code === 2424) {
+              $("#email-error").attr("title", err.errors[i].msg).show(500);
+            }
+          }
           console.log(err);
           return;
         }
@@ -80,11 +102,12 @@ function init() {
 
   var powerOnLogin = function() {
     $("#login").click(function () {
+      $(".text").removeClass("glow");
       Mooment.extension.user.authenticate({ "email": $("#email").val(), "password": $("#password").val() }, function(err, response){
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
-          $('.text').addClass('glow');
+          $(".text").addClass("glow");
           return;
         }
         // Now that we have the token from the authentication, we need to save it
@@ -97,9 +120,12 @@ function init() {
     $("#goToReset").click(goToReset);
   };
 
-  $.get("js/ui/templates/login.html", function(template) {
-    $("body").html(Mustache.render(template));
-    powerOnLogin();
-  });
+  Mooment.extension.user.isLoggedIn( function(flag) {
+    if ( flag ) {
+      goToMain();
+    } else {
+      goToLogin();
+    }
+  } );
 
 }
