@@ -48,10 +48,11 @@ Mooment.extension = (function () {
   function isLoggedIn(callback) {
     chrome.runtime.sendMessage({ "controller": "user", "action": "getToken" }, function(envelopedResponse) {
       if (callback) {
-        callback(
-          envelopedResponse.err,
-          typeof envelopedResponse.response === "string" && envelopedResponse.response.length > 0 ? true : false
-        );
+        if ( envelopedResponse.err !== null ) {
+          callback( false );
+        } else {
+          callback( typeof envelopedResponse.response === "string" && envelopedResponse.response.length > 0 ? true : false );
+        }
       }
     });
   }
