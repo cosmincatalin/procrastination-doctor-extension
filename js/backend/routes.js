@@ -32,6 +32,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     case "getToken":
       prepareAndSendCallbackResponse(null, Mooment.user.getToken(request.params) );
       break;
+    case "logout":
+      Mooment.user.logout({"token": Mooment.user.getToken()}, prepareAndSendCallbackResponse);
+      break;
     }
     break;
   // Monitor Controller

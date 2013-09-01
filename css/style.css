@@ -5,7 +5,7 @@
 
 .button {
 	color: #F0F0F0;
-	-webkit-font-smoothing: antialiased;
+	-webkit-font-smoothing: subpixel-antialiased;
 	font-family: 'Source Code Pro', sans-serif;
 	font-size: 14px;
 	padding-bottom: 8px;
@@ -42,15 +42,15 @@
 	background-color: #3B3B4B;
 }
 
-a {
+.link, a {
 	color: #682D60;
 	text-decoration: none;
-	-webkit-font-smoothing: antialiased;
+	-webkit-font-smoothing: subpixel-antialiased;
 	font-family: 'Source Code Pro', sans-serif;
 	font-size: 14px;
 }
 
-a:hover {
+.link:hover, a:hover {
 	text-decoration: underline;
 }
 
@@ -58,7 +58,7 @@ a:hover {
 	padding: 5px;
 	border: 1px solid #CCC;
 	font-size: 14px;
-	-webkit-font-smoothing: antialiased;
+	-webkit-font-smoothing: subpixel-antialiased;
 	font-family: 'Source Code Pro', sans-serif;
 	outline: none;
 	border-color: #4D90FE;
@@ -67,7 +67,7 @@ a:hover {
 
 .text.glow {
 	-webkit-animation-name: unauthenticated;
-	-webkit-animation-duration: 2s;
+	-webkit-animation-duration: 1s;
 	-webkit-animation-timing-function: ease;
 	-webkit-animation-iteration-count: 1;	
 	-webkit-animation-direction: normal;
@@ -140,4 +140,21 @@ a:hover {
 
 .form-row {
 	position: relative;
+}
+
+.iconized {
+	cursor: pointer;
+	background: url('/images/chart.ico') no-repeat;
+	height: 32px;
+	padding-left: 38px;
+	line-height: 30px;
+	margin-bottom: 10px;
+}
+
+#stats {
+	width: 65px;
+}
+
+#stats:hover {
+	text-decoration: line-through;
 }

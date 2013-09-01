@@ -2,11 +2,8 @@
 // If we get a token, than we set-up the event listeners
 // on the tabs.
 Mooment.user.readToken(function(response) {
-  if (typeof response.token !== "string" ) {
-    // TODO: Set-up a consistent way to handle errors in the backend
-    console.log( "An invalid response was received: " + response.toString() );
-    return;
+  if (typeof response.token === "string" ) {
+    Mooment.user.cacheToken(response.token);
+    Mooment.monitor.start();
   }
-  Mooment.user.cacheToken(response.token);
-  Mooment.monitor.start();
 });

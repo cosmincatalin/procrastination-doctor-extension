@@ -39,12 +39,25 @@ Mooment.user = (function () {
     Mooment.cors.makeRequest("POST", "user", credentials, callback);
   }
 
+  function logout(data, callback) {
+    /**
+     * Wrap the callback function so that no matter the response
+     * the token gets removed anyway and the monitor is stopped
+     */
+    Mooment.cors.makeRequest("POST", "user/logout", data, function() {
+      setToken(null);
+      Mooment.monitor.stop();
+      callback.apply(null, arguments);
+    });
+  }
+
   return {
     authenticate: authenticate,
     setToken: setToken,
     readToken: readToken,
     cacheToken: cacheToken,
     getToken: getToken,
-    register: register
+    register: register,
+    logout: logout
   };
 }());

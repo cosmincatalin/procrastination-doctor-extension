@@ -7,6 +7,10 @@ $("document").ready(init);
  */
 function init() {
 
+  var powerOffMain = function() {
+    $("#logout").unbind("click");
+  };
+
   var goToMain = function() {
     $.get("js/ui/templates/main.html", function(template) {
       powerOffLogin();
@@ -17,12 +21,21 @@ function init() {
 
   var powerOnMain = function() {
     $("#logout").click(function () {
+      Mooment.extension.user.logout(function(err, response){
+        if (err) {
+          // TODO: Handle the callback errors gracefully
+          console.log(err);
+          return;
+        }
+        goToLogin();
+      });
     });
   };
 
   var goToLogin = function() {
     $.get("js/ui/templates/login.html", function(template) {
       powerOffRegister();
+      powerOffMain();
       $("body").html(Mustache.render(template));
       powerOnLogin();
     });
@@ -114,6 +127,7 @@ function init() {
         // in the local storage( and cahe it).
         Mooment.extension.user.setToken(response.token);
         Mooment.extension.startMonitoring();
+        goToMain();
       });
     });
     $("#goToRegister").click(goToRegister);

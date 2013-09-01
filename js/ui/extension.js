@@ -57,13 +57,26 @@ Mooment.extension = (function () {
     });
   }
 
+  function logout(callback) {
+    chrome.runtime.sendMessage({ "controller": "user", "action": "logout" }, function(envelopedResponse) {
+      if (callback) {
+        if ( envelopedResponse.err !== null ) {
+          callback( false );
+        } else {
+          callback( typeof envelopedResponse.response === "string" && envelopedResponse.response.length > 0 ? true : false );
+        }
+      }
+    });
+  }
+
   return {
     startMonitoring: startMonitoring,
     user: {
       authenticate: authenticate,
       setToken: setToken,
       register: register,
-      isLoggedIn: isLoggedIn
+      isLoggedIn: isLoggedIn,
+      logout: logout
     }
   };
 }());

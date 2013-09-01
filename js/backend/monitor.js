@@ -5,9 +5,22 @@ Mooment.monitor = (function() {
   function send(callback) {
     console.log("Executing send task");
     // TODO: Think about implementing Q to avoid callback hell
-    Mooment.data.send(function() {
+    Mooment.data.send(function(err) {
+      if ( err !== null ) {
+        switch (err.code) {
+          case 5343:
+            stop();
+            Mooment.user.setToken(null);
+            return;
+            break;
+        }
+      }
       Mooment.data.truncate();
     });
+  }
+
+  function stop() {
+    clearInterval( intervalId );    
   }
 
   /**
@@ -41,11 +54,14 @@ Mooment.monitor = (function() {
      * Start the recurring task that sends the statistics back to the server
      * TODO: Remove hardcoding
      */
-    interval = setInterval(send, 1000 * 60 );
+    if ( !(parseInt( intervalId ) > 0 ) ) {
+      intervalId = setInterval(send, 1000 * 60 );
+    }
     // TODO: Finally call the callback function to signal that starting has completed
   }
 
   return {
-    start: start
+    start: start,
+    stop: stop
   };
 }());
