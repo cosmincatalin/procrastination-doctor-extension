@@ -20,7 +20,30 @@ Mooment.monitor = (function() {
   }
 
   function stop() {
-    clearInterval( intervalId );    
+    clearInterval( intervalId );
+    chrome.tabs.onUpdated.removeListener(tabUpdatedHandler);
+    chrome.tabs.onActivated.removeListener(tabActivatedHandler);
+  }
+
+
+  function tabUpdatedHandler(tabId, changeInfo, tab) {
+      // Only start monitoring once the page is completely loaded
+      if (changeInfo.status !== "complete" ) {
+        return;
+      }
+      try {
+        Mooment.host.setActive(Mooment.util.getSite(tab.url));
+      // Silently ignore if the url fails to be parsed
+      } catch (ex) { }    
+  }
+
+  function tabActivatedHandler(activeInfo) {
+    chrome.tabs.get(activeInfo.tabId, function(tab) {
+      try{
+        Mooment.host.setActive(Mooment.util.getSite(tab.url));
+      // Silently ignore if the url fails to be parsed
+      } catch (ex) { }
+    });
   }
 
   /**
@@ -31,24 +54,13 @@ Mooment.monitor = (function() {
    *                             events and tasks are started.
    */
   function start(callback) {
-    chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab ) {
-      // Only start monitoring once the page is completely loaded
-      if (changeInfo.status !== "complete" ) {
-        return;
-      }
-      try {
-        Mooment.host.setActive(Mooment.util.getSite(tab.url));
-      // Silently ignore if the url fails to be parsed
-      } catch (ex) { }
-    });
-    chrome.tabs.onActivated.addListener(function(activeInfo) {
-      chrome.tabs.get(activeInfo.tabId, function(tab) {
-        try{
-          Mooment.host.setActive(Mooment.util.getSite(tab.url));
-        // Silently ignore if the url fails to be parsed
-        } catch (ex) { }
-      });
-    });
+    chrome.tabs.onUpdated.addListener( tabUpdatedHandler );
+    chrome.tabs.onActivated.addListener( tabActivatedHandler );
+    // TODO
+    // chrome.tabs.onHighlighted.addListener( tabActivatedHandler );
+    // chrome.tabs.onRemoved.addListener( tabActivatedHandler );
+    // chrome.tabs.onAttached.addListener( tabActivatedHandler );
+    // chrome.tabs.onDetached.addListener( tabActivatedHandler );
 
     /**
      * Start the recurring task that sends the statistics back to the server
