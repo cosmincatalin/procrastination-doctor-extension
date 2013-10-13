@@ -23,6 +23,13 @@ Mooment.monitor = (function() {
     clearInterval( intervalId );
     chrome.tabs.onUpdated.removeListener(tabUpdatedHandler);
     chrome.tabs.onActivated.removeListener(tabActivatedHandler);
+    // TODO: Move this to a function
+    chrome.browserAction.setIcon({
+      "path": {
+        "19": "images/icon19-red.png",
+        "38": "images/icon38-red.png"
+      }
+    });
   }
 
 
@@ -75,6 +82,14 @@ Mooment.monitor = (function() {
     if ( !(parseInt( intervalId ) > 0 ) ) {
       intervalId = setInterval(send, 1000 * 60 );
     }
+
+    // TODO: Move this to a function
+    chrome.browserAction.setIcon({
+      "path": {
+        "19": "images/icon19.png",
+        "38": "images/icon38.png"
+      }
+    });
     // TODO: Finally call the callback function to signal that starting has completed
   }
 
