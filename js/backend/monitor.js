@@ -46,6 +46,10 @@ Mooment.monitor = (function() {
     });
   }
 
+  function focusLost() {
+    Mooment.host.unsetActive();
+  }
+
   /**
    * After the token is saved in the synchronized store, that is,
    * the user is authenticated, start monitoring the web activities
@@ -56,11 +60,13 @@ Mooment.monitor = (function() {
   function start(callback) {
     chrome.tabs.onUpdated.addListener( tabUpdatedHandler );
     chrome.tabs.onActivated.addListener( tabActivatedHandler );
+    chrome.windows.onFocusChanged.addListener( focusLost );
     // TODO
     // chrome.tabs.onHighlighted.addListener( tabActivatedHandler );
     // chrome.tabs.onRemoved.addListener( tabActivatedHandler );
     // chrome.tabs.onAttached.addListener( tabActivatedHandler );
     // chrome.tabs.onDetached.addListener( tabActivatedHandler );
+    // 
 
     /**
      * Start the recurring task that sends the statistics back to the server

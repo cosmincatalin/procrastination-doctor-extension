@@ -55,6 +55,25 @@ Mooment.host = (function () {
     chrome.storage.local.set(recordToSave, callback);
   }
 
+  function removeActive(callback) {
+    // Get the current active record if it exists.
+    getActive(function(record) {
+      // Check to see if there is an active record object.
+      // If there is no active record, we can call the callback directly.
+      if (Object.keys(record).length === 0) {
+        callback();
+        return;
+      }
+      // If there is an active record, try to see if it is not
+      // already present in the archive and than add it
+      getRecorded(record[ACTIVE_HOST].host, addInterval.bind(this, callback, record) );
+    });
+  }
+
+  function unsetActiveHost(callback) {
+    chrome.storage.local.remove(ACTIVE_HOST, callback);
+  }
+
   /**
    * Stops the current task and saves it
    */
@@ -90,6 +109,12 @@ Mooment.host = (function () {
       // The first step to making a host active is to make the 
       // previous host inactive
       setInactive(setActiveHost.bind(this, host, callback));
+    },
+    unsetActive: function(callback) {
+      // use a global now object so we are not dependent on
+      // asynchronous calls
+      now = new Date();
+      removeActive(unsetActiveHost.bind(this, callback));
     }
   };
 }());
