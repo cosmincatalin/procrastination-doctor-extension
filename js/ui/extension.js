@@ -69,6 +69,14 @@ Mooment.extension = (function () {
     });
   }
 
+  function resetPassword(params, callback) {
+    chrome.runtime.sendMessage({ "controller": "user", "action": "resetPassword", "params": params }, function(envelopedResponse) {
+      if (callback) {
+        callback(envelopedResponse.err, envelopedResponse.response);
+      }
+    });
+  }
+
   return {
     startMonitoring: startMonitoring,
     user: {
@@ -76,7 +84,8 @@ Mooment.extension = (function () {
       setToken: setToken,
       register: register,
       isLoggedIn: isLoggedIn,
-      logout: logout
+      logout: logout,
+      resetPassword: resetPassword
     }
   };
 }());

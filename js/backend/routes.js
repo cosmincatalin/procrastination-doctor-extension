@@ -35,6 +35,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     case "logout":
       Mooment.user.logout({"token": Mooment.user.getToken()}, prepareAndSendCallbackResponse);
       break;
+    case "resetPassword":
+      Mooment.user.resetPassword(request.params, prepareAndSendCallbackResponse);
+      break;
     }
     break;
   // Monitor Controller

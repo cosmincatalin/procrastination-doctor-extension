@@ -39,6 +39,10 @@ Mooment.user = (function () {
     Mooment.cors.makeRequest("POST", "user", credentials, callback);
   }
 
+  function resetPassword(params, callback) {
+    Mooment.cors.makeRequest("DELETE", "user/password", params, callback);
+  }
+
   function logout(data, callback) {
     /**
      * Wrap the callback function so that no matter the response
@@ -58,6 +62,7 @@ Mooment.user = (function () {
     cacheToken: cacheToken,
     getToken: getToken,
     register: register,
-    logout: logout
+    logout: logout,
+    resetPassword: resetPassword
   };
 }());
