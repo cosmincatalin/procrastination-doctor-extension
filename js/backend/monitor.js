@@ -3,7 +3,6 @@ Mooment.monitor = (function() {
   var intervalId;
 
   function send(callback) {
-    console.log("Executing send task");
     // TODO: Think about implementing Q to avoid callback hell
     Mooment.data.send(function(err) {
       if ( err !== null ) {
@@ -80,7 +79,7 @@ Mooment.monitor = (function() {
      * TODO: Remove hardcoding
      */
     if ( !(parseInt( intervalId ) > 0 ) ) {
-      intervalId = setInterval(send, 1000 * 60 );
+      intervalId = setInterval(send, 1000 * 600 );
     }
 
     // TODO: Move this to a function

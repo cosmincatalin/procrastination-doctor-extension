@@ -6,12 +6,6 @@ Mooment.user.readToken(function(response) {
   if (typeof response.token === "string" ) {
     Mooment.user.cacheToken(response.token);
     Mooment.monitor.start();
-    chrome.browserAction.setIcon({
-   		"path": {
-	      "19": "images/icon19.png",
-	      "38": "images/icon38.png"
-   		}
-    });
   } else {
 		chrome.browserAction.setIcon({
    		"path": {
