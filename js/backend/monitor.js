@@ -52,7 +52,10 @@ Mooment.monitor = (function() {
     });
   }
 
-  function focusLost() {
+  function focusChanged(state) {
+    if ( state === "active" ) {
+      return;
+    }
     Mooment.host.unsetActive();
   }
 
@@ -66,7 +69,8 @@ Mooment.monitor = (function() {
   function start(callback) {
     chrome.tabs.onUpdated.addListener( tabUpdatedHandler );
     chrome.tabs.onActivated.addListener( tabActivatedHandler );
-    chrome.windows.onFocusChanged.addListener( focusLost );
+    chrome.windows.onFocusChanged.addListener( focusChanged );
+    chrome.idle.onStateChanged.addListener( focusChanged );
     // TODO
     // chrome.tabs.onHighlighted.addListener( tabActivatedHandler );
     // chrome.tabs.onRemoved.addListener( tabActivatedHandler );
@@ -81,6 +85,8 @@ Mooment.monitor = (function() {
     if ( !(parseInt( intervalId ) > 0 ) ) {
       intervalId = setInterval(send, 1000 * 600 );
     }
+
+    chrome.idle.setDetectionInterval( 15 * 60 );
 
     // TODO: Move this to a function
     chrome.browserAction.setIcon({

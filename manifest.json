@@ -19,7 +19,8 @@
   "permissions": [
     "<all_urls>",
     "storage",
-    "tabs"
+    "tabs",
+    "idle"
   ],
   "background": {
     "scripts": [

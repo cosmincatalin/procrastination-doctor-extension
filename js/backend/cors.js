@@ -1,7 +1,7 @@
 Mooment.cors = {
 
   makeRequest: function(http_method, path, data, callback) {
-    var url = "http://mooment-api.elasticbeanstalk.com/api/" + path;
+    var url = "http://localhost:3001/api/" + path;
     var attrs = {
       type: http_method,
       url: url,
