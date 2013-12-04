@@ -3,6 +3,8 @@ Mooment.monitor = (function() {
   var intervalId;
 
   function send(callback) {
+    console.log('Sending to API');
+    chrome.storage.local.get(null, function(recordings){console.log(recordings);} );
     // TODO: Think about implementing Q to avoid callback hell
     Mooment.data.send(function(err) {
       if ( err !== null ) {
@@ -19,7 +21,9 @@ Mooment.monitor = (function() {
   }
 
   function stop() {
+    console.log('Stopping the monitor');
     clearInterval( intervalId );
+    intervalId = undefined;
     chrome.tabs.onUpdated.removeListener(tabUpdatedHandler);
     chrome.tabs.onActivated.removeListener(tabActivatedHandler);
     // TODO: Move this to a function
@@ -31,19 +35,24 @@ Mooment.monitor = (function() {
     });
   }
 
+  function getCurrentTab(callback) {
+    chrome.tabs.query({active: true}, callback );
+  }
 
   function tabUpdatedHandler(tabId, changeInfo, tab) {
-      // Only start monitoring once the page is completely loaded
-      if (changeInfo.status !== "complete" ) {
-        return;
-      }
-      try {
-        Mooment.host.setActive(Mooment.util.getSite(tab.url));
-      // Silently ignore if the url fails to be parsed
-      } catch (ex) { }    
+    console.log('Swithing to active site ' + tab.url);
+    // Only start monitoring once the page is completely loaded
+    if (changeInfo.status !== "complete" ) {
+      return;
+    }
+    try {
+      Mooment.host.setActive(Mooment.util.getSite(tab.url));
+    // Silently ignore if the url fails to be parsed
+    } catch (ex) { }
   }
 
   function tabActivatedHandler(activeInfo) {
+    console.log('Swithing active site');
     chrome.tabs.get(activeInfo.tabId, function(tab) {
       try{
         Mooment.host.setActive(Mooment.util.getSite(tab.url));
@@ -53,10 +62,33 @@ Mooment.monitor = (function() {
   }
 
   function focusChanged(state) {
-    if ( state === "active" ) {
-      return;
+    switch (state) {
+      case 506:
+      case -1:
+      case 'idle':
+        console.log('Browser idle ' + state);
+        Mooment.host.unsetActive();
+        return;
+        break;
+      case 1:
+      case 'active':
+        console.log('Active ' + state);
+        chrome.tabs.query({
+          active: true,
+          currentWindow: true
+        }, function(tabs) {
+          try{
+            Mooment.host.setActive(Mooment.util.getSite(tabs[0].url));
+          // Silently ignore if the url fails to be parsed
+          } catch (ex) {
+            console.log('Unrecordable tab');
+          }
+        });
+        break
+      default:
+        console.log('Default idle ' + state);
+        return;
     }
-    Mooment.host.unsetActive();
   }
 
   /**
@@ -76,17 +108,20 @@ Mooment.monitor = (function() {
     // chrome.tabs.onRemoved.addListener( tabActivatedHandler );
     // chrome.tabs.onAttached.addListener( tabActivatedHandler );
     // chrome.tabs.onDetached.addListener( tabActivatedHandler );
-    // 
+    //
 
     /**
      * Start the recurring task that sends the statistics back to the server
      * TODO: Remove hardcoding
      */
     if ( !(parseInt( intervalId ) > 0 ) ) {
-      intervalId = setInterval(send, 1000 * 600 );
+      var interval = 1000 * 60;
+      console.log('Setting interval to every ' + interval / ( 1000 * 60 ) + ' minutes' );
+      intervalId = setInterval(send, interval );
     }
 
-    chrome.idle.setDetectionInterval( 15 * 60 );
+    // chrome.idle.setDetectionInterval( 15 * 60 );
+    chrome.idle.setDetectionInterval( 60 );
 
     // TODO: Move this to a function
     chrome.browserAction.setIcon({
