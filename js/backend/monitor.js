@@ -40,21 +40,40 @@ Mooment.monitor = (function() {
   }
 
   function tabUpdatedHandler(tabId, changeInfo, tab) {
-    console.log('Swithing to active site ' + tab.url);
-    // Only start monitoring once the page is completely loaded
-    if (changeInfo.status !== "complete" ) {
-      return;
+    // Need to look if the updated event was called from a tab
+    // that is not the front-facing tab.
+    var found = false;
+    chrome.tabs.query({
+      active: true,
+      highlighted : true,
+      lastFocusedWindow: true
+    }, function (tabs) {
+      for (var i = tabs.length - 1; i >= 0; i--) {
+        if (tabs[i].id === tabId) {
+          console.log('Switching to active site ' + tab.url);
+          // Only start monitoring once the page is completely loaded
+          if (changeInfo.status !== 'complete' ) {
+            break;
+          }
+          try {
+            Mooment.host.setActive(Mooment.util.getSite(tab.url));
+          // Silently ignore if the url fails to be parsed
+          } catch (ex) { }
+          found = true;
+          break;
+        }
+      };
+    });
+    if (!found) {
+      console.log('Background domain called ' + tab.url);
     }
-    try {
-      Mooment.host.setActive(Mooment.util.getSite(tab.url));
-    // Silently ignore if the url fails to be parsed
-    } catch (ex) { }
   }
 
   function tabActivatedHandler(activeInfo) {
     console.log('Swithing active site');
     chrome.tabs.get(activeInfo.tabId, function(tab) {
       try{
+        console.log('....' + tab.url);
         Mooment.host.setActive(Mooment.util.getSite(tab.url));
       // Silently ignore if the url fails to be parsed
       } catch (ex) { }
@@ -86,7 +105,7 @@ Mooment.monitor = (function() {
         });
         break
       default:
-        console.log('Default idle ' + state);
+        console.log('Unknown default idle ' + state);
         return;
     }
   }
@@ -101,14 +120,10 @@ Mooment.monitor = (function() {
   function start(callback) {
     chrome.tabs.onUpdated.addListener( tabUpdatedHandler );
     chrome.tabs.onActivated.addListener( tabActivatedHandler );
+
     chrome.windows.onFocusChanged.addListener( focusChanged );
+
     chrome.idle.onStateChanged.addListener( focusChanged );
-    // TODO
-    // chrome.tabs.onHighlighted.addListener( tabActivatedHandler );
-    // chrome.tabs.onRemoved.addListener( tabActivatedHandler );
-    // chrome.tabs.onAttached.addListener( tabActivatedHandler );
-    // chrome.tabs.onDetached.addListener( tabActivatedHandler );
-    //
 
     /**
      * Start the recurring task that sends the statistics back to the server
