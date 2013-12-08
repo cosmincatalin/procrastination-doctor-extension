@@ -18,12 +18,16 @@ Mooment.user = (function () {
   /**
    * Sets the value of the token into the local storage.
    * Also, set-up a cached variable to be used through out
-   * the session lifetime 
+   * the session lifetime
    * @param {String}   token    The string to be saved
    */
   function setToken(token, callback) {
     cacheToken(token);
     chrome.storage.sync.set({"token": token}, callback);
+  }
+
+  function logInWebInterface(callback) {
+    
   }
 
   /**
@@ -63,6 +67,7 @@ Mooment.user = (function () {
     getToken: getToken,
     register: register,
     logout: logout,
-    resetPassword: resetPassword
+    resetPassword: resetPassword,
+    logInWebInterface: logInWebInterface
   };
 }());

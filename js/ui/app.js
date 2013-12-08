@@ -17,6 +17,7 @@ function init() {
 
   var powerOffMain = function() {
     $("#logout").unbind("click");
+    $("#stats").unbind("click");
   };
 
   var powerOnMain = function() {
@@ -28,6 +29,16 @@ function init() {
           return;
         }
         goToLogin();
+      });
+    });
+    $("#stats").click(function () {
+      Mooment.extension.user.logInWebInterface(function(err, response){
+        if (err) {
+          // TODO: Handle the callback errors gracefully
+          console.log(err);
+          return;
+        }
+        // TODO: Open the web interface using the provided token
       });
     });
   };

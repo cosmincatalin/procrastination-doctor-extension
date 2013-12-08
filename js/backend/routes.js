@@ -23,6 +23,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     case "authenticate":
       Mooment.user.authenticate(request.params, prepareAndSendCallbackResponse);
       break;
+    case "logInWebInterface":
+      Mooment.user.logInWebInterface(prepareAndSendCallbackResponse);
+      break;
     case "register":
       Mooment.user.register(request.params, prepareAndSendCallbackResponse);
       break;

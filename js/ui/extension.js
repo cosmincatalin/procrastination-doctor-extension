@@ -25,6 +25,14 @@ Mooment.extension = (function () {
     });
   }
 
+  function logInWebInterface(callback) {
+    chrome.runtime.sendMessage({ "controller": "user", "action": "logInWebInterface" }, function(envelopedResponse) {
+      if (callback) {
+        callback(envelopedResponse.err, envelopedResponse.response);
+      }
+    });
+  }
+
   function register(credentials, callback) {
     chrome.runtime.sendMessage({ "controller": "user", "action": "register", "params": credentials }, function(envelopedResponse) {
       if (callback) {
@@ -85,7 +93,8 @@ Mooment.extension = (function () {
       register: register,
       isLoggedIn: isLoggedIn,
       logout: logout,
-      resetPassword: resetPassword
+      resetPassword: resetPassword,
+      logInWebInterface: logInWebInterface
     }
   };
 }());
