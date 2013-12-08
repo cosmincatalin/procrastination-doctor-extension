@@ -2,159 +2,129 @@
  * Styles should be converted in the future to an oo style system
  * especially if Chrome start using stylus or something similar
  */
-
-.button {
-	color: #F0F0F0;
-	-webkit-font-smoothing: subpixel-antialiased;
-	font-family: 'Source Code Pro', sans-serif;
-	font-size: 14px;
-	padding-bottom: 8px;
-	padding-top: 8px;
-	padding-left: 13px;
-	padding-right: 13px;
-	border: none;
-	letter-spacing: 0.1em;
-	cursor: pointer;
-	margin: 0px;
+ .button {
+  color: #F0F0F0;
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-family:'Source Code Pro', sans-serif;
+  font-size: 14px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  padding-left: 13px;
+  padding-right: 13px;
+  border: none;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  margin: 0px;
 }
-
 .button.basic {
-	background-color: #64908A;
+  background-color: #64908A;
 }
-
 .button.basic:hover {
-	background-color: #59807B;
+  background-color: #59807B;
 }
-
 .button.important {
-	background-color: #CC2A41;
+  background-color: #CC2A41;
 }
-
 .button.important:hover {
-	background-color: #B6253A;
+  background-color: #B6253A;
 }
-
 .button.other {
-	background-color: #424254;
+  background-color: #424254;
 }
-
 .button.other:hover {
-	background-color: #3B3B4B;
+  background-color: #3B3B4B;
 }
-
 .link, a {
-	color: #682D60;
-	text-decoration: none;
-	-webkit-font-smoothing: subpixel-antialiased;
-	font-family: 'Source Code Pro', sans-serif;
-	font-size: 14px;
+  color: #682D60;
+  text-decoration: none;
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-family:'Source Code Pro', sans-serif;
+  font-size: 14px;
 }
-
 .link:hover, a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
-
 .text {
-	padding: 5px;
-	border: 1px solid #CCC;
-	font-size: 14px;
-	-webkit-font-smoothing: subpixel-antialiased;
-	font-family: 'Source Code Pro', sans-serif;
-	outline: none;
-	border-color: #4D90FE;
-	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  border: 1px solid #CCC;
+  font-size: 14px;
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-family:'Source Code Pro', sans-serif;
+  outline: none;
+  border-color: #4D90FE;
+  -webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
 }
-
 .text.glow {
-	-webkit-animation-name: unauthenticated;
-	-webkit-animation-duration: 1s;
-	-webkit-animation-timing-function: ease;
-	-webkit-animation-iteration-count: 1;	
-	-webkit-animation-direction: normal;
-	-webkit-animation-delay: 0;
-	-webkit-animation-play-state: running;
-	-webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: unauthenticated;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-timing-function: ease;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-direction: normal;
+  -webkit-animation-delay: 0;
+  -webkit-animation-play-state: running;
+  -webkit-animation-fill-mode: forwards;
 }
-
 @-webkit-keyframes unauthenticated {
-	0% {
-		-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
-	}
-
-	25% {
-		-webkit-box-shadow: inset 0px 0px 7px rgba(255, 0, 0, 1);
-	}
-
-	50% {
-		-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
-	}
-
-	75% {
-		-webkit-box-shadow: inset 0px 0px 7px rgba(255, 0, 0, 1);
-	}
-
-	100% {
-		-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);	
-	}
+  0% {
+    -webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+  }
+  25% {
+    -webkit-box-shadow: inset 0px 0px 7px rgba(255, 0, 0, 1);
+  }
+  50% {
+    -webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+  }
+  75% {
+    -webkit-box-shadow: inset 0px 0px 7px rgba(255, 0, 0, 1);
+  }
+  100% {
+    -webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.2);
+  }
 }
-
 .text.error {
-	border-color: red;
+  border-color: red;
 }
-
 .text:hover {
-	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.3);	
+  -webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.3);
 }
-
 .text:focus {
-	-webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.3);	
+  -webkit-box-shadow: inset 0px 0px 7px rgba(0, 0, 0, 0.3);
 }
-
 .last-input {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-
 .button.margin-fix {
-	margin-left: 2px;
+  margin-left: 2px;
 }
-
 .error-indicator {
-	display: none;
-	background: url('/images/error.ico') 50% 50% no-repeat;
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	width: 16px;
-	height: 16px;
+  display: none;
+  background: url('/images/error.ico') 50% 50% no-repeat;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
 }
-
 .reset-indicator {
-	background: url('/images/question.ico') 50% 50% no-repeat;
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	width: 16px;
-	height: 16px;
-	cursor: pointer;
+  background: url('/images/question.ico') 50% 50% no-repeat;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
-
 .form-row {
-	position: relative;
+  position: relative;
 }
-
 .iconized {
-	cursor: pointer;
-	background: url('/images/chart.ico') no-repeat;
-	height: 32px;
-	padding-left: 38px;
-	line-height: 30px;
-	margin-bottom: 10px;
+  cursor: pointer;
+  background: url('/images/chart.ico') no-repeat;
+  height: 32px;
+  padding-left: 38px;
+  line-height: 30px;
+  margin-bottom: 10px;
 }
-
 #stats {
-	width: 65px;
-}
-
-#stats:hover {
-	text-decoration: line-through;
+  width: 65px;
 }

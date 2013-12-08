@@ -1,12 +1,13 @@
-Mooment.user = (function () {
+Mooment.user = (function() {
 
   var token;
 
-  function authenticate(credentials,callback) {
+  function authenticate(credentials, callback) {
     Mooment.cors.makeRequest("POST", "user/login", credentials, callback);
   }
 
   // Gets the value of the token from the cache
+
   function getToken() {
     return token;
   }
@@ -21,13 +22,16 @@ Mooment.user = (function () {
    * the session lifetime
    * @param {String}   token    The string to be saved
    */
+
   function setToken(token, callback) {
     cacheToken(token);
-    chrome.storage.sync.set({"token": token}, callback);
+    chrome.storage.sync.set({
+      "token": token
+    }, callback);
   }
 
   function logInWebInterface(callback) {
-    
+    Mooment.cors.makeRequest("POST", "/api/user/token", callback);
   }
 
   /**
@@ -35,8 +39,9 @@ Mooment.user = (function () {
    * @param  {Function} callback The function to pass the
    *                             result and to execute the callback
    */
+
   function readToken(callback) {
-    chrome.storage.sync.get("token",callback);
+    chrome.storage.sync.get("token", callback);
   }
 
   function register(credentials, callback) {

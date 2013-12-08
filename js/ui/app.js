@@ -5,6 +5,7 @@ $("document").ready(init);
  * though, the footprint of the code is really
  * small and there are no performance losses.
  */
+
 function init() {
 
   var goToMain = function() {
@@ -21,8 +22,8 @@ function init() {
   };
 
   var powerOnMain = function() {
-    $("#logout").click(function () {
-      Mooment.extension.user.logout(function(err, response){
+    $("#logout").click(function() {
+      Mooment.extension.user.logout(function(err, response) {
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
@@ -31,8 +32,8 @@ function init() {
         goToLogin();
       });
     });
-    $("#stats").click(function () {
-      Mooment.extension.user.logInWebInterface(function(err, response){
+    $("#stats").click(function() {
+      Mooment.extension.user.logInWebInterface(function(err, response) {
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
@@ -58,9 +59,12 @@ function init() {
   };
 
   var powerOnLogin = function() {
-    $("#login").click(function () {
+    $("#login").click(function() {
       $(".text").removeClass("glow");
-      Mooment.extension.user.authenticate({ "email": $("#email").val(), "password": $("#password").val() }, function(err, response){
+      Mooment.extension.user.authenticate({
+        "email": $("#email").val(),
+        "password": $("#password").val()
+      }, function(err, response) {
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
@@ -92,12 +96,15 @@ function init() {
   };
 
   var powerOnRegister = function() {
-    $("#register").click(function () {
+    $("#register").click(function() {
       $(".error-indicator").hide();
-      Mooment.extension.user.register({ "email": $("#email").val(), "password": $("#password").val() }, function(err, response){
+      Mooment.extension.user.register({
+        "email": $("#email").val(),
+        "password": $("#password").val()
+      }, function(err, response) {
         var i;
         if (err) {
-          for ( i in err.errors) {
+          for (i in err.errors) {
             if (err.errors[i].code === 1045) {
               $("#password-error").attr("title", err.errors[i].msg).show(500);
             }
@@ -128,8 +135,10 @@ function init() {
   };
 
   var powerOnReset = function() {
-    $("#reset").click(function () {
-      Mooment.extension.user.resetPassword({ "email": $("#email").val() }, function(err, response){
+    $("#reset").click(function() {
+      Mooment.extension.user.resetPassword({
+        "email": $("#email").val()
+      }, function(err, response) {
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
@@ -144,12 +153,12 @@ function init() {
     $("#goToLogin").click(goToLogin);
   };
 
-  Mooment.extension.user.isLoggedIn( function(flag) {
-    if ( flag ) {
+  Mooment.extension.user.isLoggedIn(function(flag) {
+    if (flag) {
       goToMain();
     } else {
       goToLogin();
     }
-  } );
+  });
 
 }

@@ -4,10 +4,12 @@ Mooment.monitor = (function() {
 
   function send(callback) {
     console.log('Sending to API');
-    chrome.storage.local.get(null, function(recordings){console.log(recordings);} );
+    chrome.storage.local.get(null, function(recordings) {
+      console.log(recordings);
+    });
     // TODO: Think about implementing Q to avoid callback hell
     Mooment.data.send(function(err) {
-      if ( err !== null ) {
+      if (err !== null) {
         switch (err.code) {
           case 5343:
             stop();
@@ -22,7 +24,7 @@ Mooment.monitor = (function() {
 
   function stop() {
     console.log('Stopping the monitor');
-    clearInterval( intervalId );
+    clearInterval(intervalId);
     intervalId = undefined;
     chrome.tabs.onUpdated.removeListener(tabUpdatedHandler);
     chrome.tabs.onActivated.removeListener(tabActivatedHandler);
@@ -36,7 +38,9 @@ Mooment.monitor = (function() {
   }
 
   function getCurrentTab(callback) {
-    chrome.tabs.query({active: true}, callback );
+    chrome.tabs.query({
+      active: true
+    }, callback);
   }
 
   function tabUpdatedHandler(tabId, changeInfo, tab) {
@@ -45,20 +49,20 @@ Mooment.monitor = (function() {
     var found = false;
     chrome.tabs.query({
       active: true,
-      highlighted : true,
+      highlighted: true,
       lastFocusedWindow: true
-    }, function (tabs) {
+    }, function(tabs) {
       for (var i = tabs.length - 1; i >= 0; i--) {
         if (tabs[i].id === tabId) {
           console.log('Switching to active site ' + tab.url);
           // Only start monitoring once the page is completely loaded
-          if (changeInfo.status !== 'complete' ) {
+          if (changeInfo.status !== 'complete') {
             break;
           }
           try {
             Mooment.host.setActive(Mooment.util.getSite(tab.url));
-          // Silently ignore if the url fails to be parsed
-          } catch (ex) { }
+            // Silently ignore if the url fails to be parsed
+          } catch (ex) {}
           found = true;
           break;
         }
@@ -72,11 +76,11 @@ Mooment.monitor = (function() {
   function tabActivatedHandler(activeInfo) {
     console.log('Swithing active site');
     chrome.tabs.get(activeInfo.tabId, function(tab) {
-      try{
+      try {
         console.log('....' + tab.url);
         Mooment.host.setActive(Mooment.util.getSite(tab.url));
-      // Silently ignore if the url fails to be parsed
-      } catch (ex) { }
+        // Silently ignore if the url fails to be parsed
+      } catch (ex) {}
     });
   }
 
@@ -96,9 +100,9 @@ Mooment.monitor = (function() {
           active: true,
           currentWindow: true
         }, function(tabs) {
-          try{
+          try {
             Mooment.host.setActive(Mooment.util.getSite(tabs[0].url));
-          // Silently ignore if the url fails to be parsed
+            // Silently ignore if the url fails to be parsed
           } catch (ex) {
             console.log('Unrecordable tab');
           }
@@ -117,26 +121,27 @@ Mooment.monitor = (function() {
    * @param  {Function} callback A function to be called after the
    *                             events and tasks are started.
    */
+
   function start(callback) {
-    chrome.tabs.onUpdated.addListener( tabUpdatedHandler );
-    chrome.tabs.onActivated.addListener( tabActivatedHandler );
+    chrome.tabs.onUpdated.addListener(tabUpdatedHandler);
+    chrome.tabs.onActivated.addListener(tabActivatedHandler);
 
-    chrome.windows.onFocusChanged.addListener( focusChanged );
+    chrome.windows.onFocusChanged.addListener(focusChanged);
 
-    chrome.idle.onStateChanged.addListener( focusChanged );
+    chrome.idle.onStateChanged.addListener(focusChanged);
 
     /**
      * Start the recurring task that sends the statistics back to the server
      * TODO: Remove hardcoding
      */
-    if ( !(parseInt( intervalId ) > 0 ) ) {
+    if (!(parseInt(intervalId) > 0)) {
       var interval = 1000 * 60;
-      console.log('Setting interval to every ' + interval / ( 1000 * 60 ) + ' minutes' );
-      intervalId = setInterval(send, interval );
+      console.log('Setting interval to every ' + interval / (1000 * 60) + ' minutes');
+      intervalId = setInterval(send, interval);
     }
 
     // chrome.idle.setDetectionInterval( 15 * 60 );
-    chrome.idle.setDetectionInterval( 60 );
+    chrome.idle.setDetectionInterval(60);
 
     // TODO: Move this to a function
     chrome.browserAction.setIcon({

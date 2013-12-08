@@ -1,14 +1,15 @@
 // Defines the public routes
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
   /**
    * Since the callback of the onMessage handler accepts only
    * one parameter, we have to pack the response before calling
    * the function
    */
+
   function prepareAndSendCallbackResponse(err, response) {
     // If there's no callback set, it makes no sense to call it
-    if( sendResponse ) {
+    if (sendResponse) {
       sendResponse({
         "err": err,
         "response": response
@@ -17,40 +18,42 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
   }
 
   switch (request.controller) {
-  // User Controller
-  case "user":
-    switch (request.action) {
-    case "authenticate":
-      Mooment.user.authenticate(request.params, prepareAndSendCallbackResponse);
+    // User Controller
+    case "user":
+      switch (request.action) {
+        case "authenticate":
+          Mooment.user.authenticate(request.params, prepareAndSendCallbackResponse);
+          break;
+        case "logInWebInterface":
+          Mooment.user.logInWebInterface(prepareAndSendCallbackResponse);
+          break;
+        case "register":
+          Mooment.user.register(request.params, prepareAndSendCallbackResponse);
+          break;
+        case "setToken":
+          Mooment.user.setToken(request.params, prepareAndSendCallbackResponse);
+          break;
+        case "getToken":
+          prepareAndSendCallbackResponse(null, Mooment.user.getToken(request.params));
+          break;
+        case "logout":
+          Mooment.user.logout({
+            "token": Mooment.user.getToken()
+          }, prepareAndSendCallbackResponse);
+          break;
+        case "resetPassword":
+          Mooment.user.resetPassword(request.params, prepareAndSendCallbackResponse);
+          break;
+      }
       break;
-    case "logInWebInterface":
-      Mooment.user.logInWebInterface(prepareAndSendCallbackResponse);
+      // Monitor Controller
+    case "monitor":
+      switch (request.action) {
+        case "startMonitoring":
+          Mooment.monitor.start(prepareAndSendCallbackResponse);
+          break;
+      }
       break;
-    case "register":
-      Mooment.user.register(request.params, prepareAndSendCallbackResponse);
-      break;
-    case "setToken":
-      Mooment.user.setToken(request.params, prepareAndSendCallbackResponse);
-      break;
-    case "getToken":
-      prepareAndSendCallbackResponse(null, Mooment.user.getToken(request.params) );
-      break;
-    case "logout":
-      Mooment.user.logout({"token": Mooment.user.getToken()}, prepareAndSendCallbackResponse);
-      break;
-    case "resetPassword":
-      Mooment.user.resetPassword(request.params, prepareAndSendCallbackResponse);
-      break;
-    }
-    break;
-  // Monitor Controller
-  case "monitor":
-    switch (request.action) {
-    case "startMonitoring":
-      Mooment.monitor.start(prepareAndSendCallbackResponse);
-      break;
-    }
-    break;
   }
   // This means that the extension will use the
   // sendResponse callback to return data
