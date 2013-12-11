@@ -31,7 +31,7 @@ Mooment.user = (function() {
   }
 
   function logInWebInterface(callback) {
-    Mooment.cors.makeRequest("POST", "/api/user/token", callback);
+    Mooment.cors.makeRequest("GET", "user/token", callback);
   }
 
   /**
