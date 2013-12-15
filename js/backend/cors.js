@@ -1,8 +1,7 @@
 Mooment.cors = {
 
   makeRequest: function(http_method, path, data, callback) {
-    var url = "https://api.procrastination-doctor.com/" + path;
-    // var url = "http://localhost:3001/" + path;
+    var url = Mooment.apiUrl + path;
 
     var attrs = {
       type: http_method,

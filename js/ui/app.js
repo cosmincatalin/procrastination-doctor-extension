@@ -39,7 +39,10 @@ function init() {
           console.log(err);
           return;
         }
-        // TODO: Open the web interface using the provided token
+        chrome.tabs.create({
+          url: Mooment.appUrl + '#/login/' + encodeURIComponent(response.token),
+          active: true
+        });
       });
     });
   };
