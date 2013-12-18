@@ -43,6 +43,8 @@ Mooment.monitor = (function() {
     }, callback);
   }
 
+  // Go into callback/if hell
+
   function tabUpdatedHandler(tabId, changeInfo, tab) {
     // Need to look if the updated event was called from a tab
     // that is not the front-facing tab.
@@ -54,16 +56,19 @@ Mooment.monitor = (function() {
     }, function(tabs) {
       for (var i = tabs.length - 1; i >= 0; i--) {
         if (tabs[i].id === tabId) {
-          console.log('Switching to active site ' + tab.url);
-          // Only start monitoring once the page is completely loaded
-          if (changeInfo.status !== 'complete') {
-            break;
-          }
-          try {
-            Mooment.host.setActive(Mooment.util.getSite(tab.url));
-            // Silently ignore if the url fails to be parsed
-          } catch (ex) {}
-          found = true;
+          chrome.idle.queryState(1000 * 60 * Mooment.idleTime, function(state) {
+            if (state === 'active') {
+              console.log('Switching to active site ' + tab.url);
+              // Only start monitoring once the page is completely loaded
+              if (changeInfo.status === 'complete') {
+                try {
+                  Mooment.host.setActive(Mooment.util.getSite(tab.url));
+                  // Silently ignore if the url fails to be parsed
+                } catch (ex) {}
+                found = true;
+              }
+            }
+          });
           break;
         }
       };
@@ -135,7 +140,7 @@ Mooment.monitor = (function() {
      * TODO: Remove hardcoding
      */
     if (!(parseInt(intervalId) > 0)) {
-      var interval = 1000 * 60;
+      var interval = 1000 * 60 * Mooment.idleTime;
       console.log('Setting interval to every ' + interval / (1000 * 60) + ' minutes');
       intervalId = setInterval(send, interval);
     }
