@@ -23,7 +23,7 @@ function init() {
 
   var powerOnMain = function() {
     $("#logout").click(function() {
-      Mooment.extension.user.logout(function(err, response) {
+      ProcDoc.extension.user.logout(function(err, response) {
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
@@ -33,14 +33,14 @@ function init() {
       });
     });
     $("#stats").click(function() {
-      Mooment.extension.user.logInWebInterface(function(err, response) {
+      ProcDoc.extension.user.logInWebInterface(function(err, response) {
         if (err) {
           // TODO: Handle the callback errors gracefully
           console.log(err);
           return;
         }
         chrome.tabs.create({
-          url: Mooment.appUrl + '#/login/' + encodeURIComponent(response.token),
+          url: ProcDoc.appUrl + '#/login/' + encodeURIComponent(response.token),
           active: true
         });
       });
@@ -64,7 +64,7 @@ function init() {
   var powerOnLogin = function() {
     $("#login").click(function() {
       $(".text").removeClass("glow");
-      Mooment.extension.user.authenticate({
+      ProcDoc.extension.user.authenticate({
         "email": $("#email").val(),
         "password": $("#password").val()
       }, function(err, response) {
@@ -76,8 +76,8 @@ function init() {
         }
         // Now that we have the token from the authentication, we need to save it
         // in the local storage( and cahe it).
-        Mooment.extension.user.setToken(response.token);
-        Mooment.extension.startMonitoring();
+        ProcDoc.extension.user.setToken(response.token);
+        ProcDoc.extension.startMonitoring();
         goToMain();
       });
     });
@@ -101,7 +101,7 @@ function init() {
   var powerOnRegister = function() {
     $("#register").click(function() {
       $(".error-indicator").hide();
-      Mooment.extension.user.register({
+      ProcDoc.extension.user.register({
         "email": $("#email").val(),
         "password": $("#password").val()
       }, function(err, response) {
@@ -139,7 +139,7 @@ function init() {
 
   var powerOnReset = function() {
     $("#reset").click(function() {
-      Mooment.extension.user.resetPassword({
+      ProcDoc.extension.user.resetPassword({
         "email": $("#email").val()
       }, function(err, response) {
         if (err) {
@@ -156,7 +156,7 @@ function init() {
     $("#goToLogin").click(goToLogin);
   };
 
-  Mooment.extension.user.isLoggedIn(function(flag) {
+  ProcDoc.extension.user.isLoggedIn(function(flag) {
     if (flag) {
       goToMain();
     } else {

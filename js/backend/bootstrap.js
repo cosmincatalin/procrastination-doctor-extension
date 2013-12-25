@@ -2,10 +2,10 @@
 // If we get a token, than we set-up the event listeners
 // on the tabs.
 // TODO: Move the icon setters someplace else
-Mooment.user.readToken(function(response) {
+ProcDoc.user.readToken(function(response) {
   if (typeof response.token === "string" ) {
-    Mooment.user.cacheToken(response.token);
-    Mooment.monitor.start();
+    ProcDoc.user.cacheToken(response.token);
+    ProcDoc.monitor.start();
   } else {
 		chrome.browserAction.setIcon({
    		"path": {

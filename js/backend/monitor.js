@@ -1,6 +1,13 @@
-Mooment.monitor = (function() {
+ProcDoc.monitor = (function() {
   // The interval id for the task that sends data to the server
-  var intervalId;
+  var sendIntervalId;
+  // The interval id for the task that sanitizes the data
+  var sanitizeIntervalId;
+
+  function sanitize() {
+    console.log('Sanitizing from ACTIVE to RECORDED');
+    ProcDoc.host.sanitizeActive();
+  }
 
   function send(callback) {
     console.log('Sending to API');
@@ -8,24 +15,24 @@ Mooment.monitor = (function() {
       console.log(recordings);
     });
     // TODO: Think about implementing Q to avoid callback hell
-    Mooment.data.send(function(err) {
+    ProcDoc.data.send(function(err) {
       if (err !== null) {
         switch (err.code) {
           case 5343:
             stop();
-            Mooment.user.setToken(null);
+            ProcDoc.user.setToken(null);
             return;
             break;
         }
       }
-      Mooment.data.truncate();
+      ProcDoc.data.truncate();
     });
   }
 
   function stop() {
     console.log('Stopping the monitor');
-    clearInterval(intervalId);
-    intervalId = undefined;
+    clearInterval(sendIntervalId);
+    sendIntervalId = undefined;
     chrome.tabs.onUpdated.removeListener(tabUpdatedHandler);
     chrome.tabs.onActivated.removeListener(tabActivatedHandler);
     // TODO: Move this to a function
@@ -56,13 +63,13 @@ Mooment.monitor = (function() {
     }, function(tabs) {
       for (var i = tabs.length - 1; i >= 0; i--) {
         if (tabs[i].id === tabId) {
-          chrome.idle.queryState(1000 * 60 * Mooment.idleTime, function(state) {
+          chrome.idle.queryState(1000 * 60 * ProcDoc.idleTime, function(state) {
             if (state === 'active') {
               console.log('Switching to active site ' + tab.url);
               // Only start monitoring once the page is completely loaded
               if (changeInfo.status === 'complete') {
                 try {
-                  Mooment.host.setActive(Mooment.util.getSite(tab.url));
+                  ProcDoc.host.setActive(ProcDoc.util.getSite(tab.url));
                   // Silently ignore if the url fails to be parsed
                 } catch (ex) {}
                 found = true;
@@ -83,7 +90,7 @@ Mooment.monitor = (function() {
     chrome.tabs.get(activeInfo.tabId, function(tab) {
       try {
         console.log('....' + tab.url);
-        Mooment.host.setActive(Mooment.util.getSite(tab.url));
+        ProcDoc.host.setActive(ProcDoc.util.getSite(tab.url));
         // Silently ignore if the url fails to be parsed
       } catch (ex) {}
     });
@@ -92,10 +99,12 @@ Mooment.monitor = (function() {
   function focusChanged(state) {
     switch (state) {
       case 506:
+      case 372:
+      case 60:
       case -1:
       case 'idle':
         console.log('Browser idle ' + state);
-        Mooment.host.unsetActive();
+        ProcDoc.host.unsetActive();
         return;
         break;
       case 1:
@@ -106,7 +115,7 @@ Mooment.monitor = (function() {
           currentWindow: true
         }, function(tabs) {
           try {
-            Mooment.host.setActive(Mooment.util.getSite(tabs[0].url));
+            ProcDoc.host.setActive(ProcDoc.util.getSite(tabs[0].url));
             // Silently ignore if the url fails to be parsed
           } catch (ex) {
             console.log('Unrecordable tab');
@@ -115,6 +124,7 @@ Mooment.monitor = (function() {
         break
       default:
         console.log('Unknown default idle ' + state);
+        ProcDoc.host.unsetActive();
         return;
     }
   }
@@ -128,6 +138,8 @@ Mooment.monitor = (function() {
    */
 
   function start(callback) {
+    var interval;
+
     chrome.tabs.onUpdated.addListener(tabUpdatedHandler);
     chrome.tabs.onActivated.addListener(tabActivatedHandler);
 
@@ -139,10 +151,16 @@ Mooment.monitor = (function() {
      * Start the recurring task that sends the statistics back to the server
      * TODO: Remove hardcoding
      */
-    if (!(parseInt(intervalId) > 0)) {
-      var interval = 1000 * 60 * Mooment.idleTime;
+    if (!(parseInt(sendIntervalId) > 0)) {
+      interval = 1000 * 60 * ProcDoc.sendInterval;
       console.log('Setting interval to every ' + interval / (1000 * 60) + ' minutes');
-      intervalId = setInterval(send, interval);
+      sendIntervalId = setInterval(send, interval);
+    }
+
+    if (!(parseInt(sanitizeIntervalId) > 0)) {
+      interval = 1000 * 60 * ProcDoc.sanitizeInterval;
+      console.log('Setting sanitize interval to every ' + interval / (1000 * 60) + ' minutes');
+      sanitizeIntervalId = setInterval(sanitize, interval);
     }
 
     // chrome.idle.setDetectionInterval( 15 * 60 );

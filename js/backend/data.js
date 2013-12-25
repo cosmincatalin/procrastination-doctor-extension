@@ -1,4 +1,4 @@
-Mooment.data = (function () {
+ProcDoc.data = (function () {
 
   var reKey = /\[RECORDED-HOST\](.*)/;
 
@@ -43,7 +43,7 @@ Mooment.data = (function () {
   }
 
   function send(callback, data) {
-    Mooment.cors.makeRequest("POST", "recording", data, callback);
+    ProcDoc.cors.makeRequest("POST", "recording", data, callback);
   }
 
   return {

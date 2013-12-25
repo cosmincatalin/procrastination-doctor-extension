@@ -25,6 +25,7 @@
   "background": {
     "scripts": [
       "js/common/namespace.js",
+      "js/common/moment.js",
       "js/common/jquery.js",
       "js/backend/user.js",
       "js/backend/cors.js",

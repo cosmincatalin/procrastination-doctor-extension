@@ -1,7 +1,7 @@
 // This object is responsible to send the actions to the extension backed.
 // It works like a tunnel, since this is the only way of communicating to
 // the eventPages defined in the scripts section
-Mooment.extension = (function () {
+ProcDoc.extension = (function () {
 
   /**
    * Activates the event handlers used for monitoring

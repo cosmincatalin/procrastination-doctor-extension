@@ -22,27 +22,27 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     case "user":
       switch (request.action) {
         case "authenticate":
-          Mooment.user.authenticate(request.params, prepareAndSendCallbackResponse);
+          ProcDoc.user.authenticate(request.params, prepareAndSendCallbackResponse);
           break;
         case "logInWebInterface":
-          Mooment.user.logInWebInterface(prepareAndSendCallbackResponse);
+          ProcDoc.user.logInWebInterface(prepareAndSendCallbackResponse);
           break;
         case "register":
-          Mooment.user.register(request.params, prepareAndSendCallbackResponse);
+          ProcDoc.user.register(request.params, prepareAndSendCallbackResponse);
           break;
         case "setToken":
-          Mooment.user.setToken(request.params, prepareAndSendCallbackResponse);
+          ProcDoc.user.setToken(request.params, prepareAndSendCallbackResponse);
           break;
         case "getToken":
-          prepareAndSendCallbackResponse(null, Mooment.user.getToken(request.params));
+          prepareAndSendCallbackResponse(null, ProcDoc.user.getToken(request.params));
           break;
         case "logout":
-          Mooment.user.logout({
-            "token": Mooment.user.getToken()
+          ProcDoc.user.logout({
+            "token": ProcDoc.user.getToken()
           }, prepareAndSendCallbackResponse);
           break;
         case "resetPassword":
-          Mooment.user.resetPassword(request.params, prepareAndSendCallbackResponse);
+          ProcDoc.user.resetPassword(request.params, prepareAndSendCallbackResponse);
           break;
       }
       break;
@@ -50,7 +50,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     case "monitor":
       switch (request.action) {
         case "startMonitoring":
-          Mooment.monitor.start(prepareAndSendCallbackResponse);
+          ProcDoc.monitor.start(prepareAndSendCallbackResponse);
           break;
       }
       break;

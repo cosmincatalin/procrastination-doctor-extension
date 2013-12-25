@@ -1,7 +1,7 @@
-Mooment.cors = {
+ProcDoc.cors = {
 
   makeRequest: function(http_method, path, data, callback) {
-    var url = Mooment.apiUrl + path;
+    var url = ProcDoc.apiUrl + path;
 
     var attrs = {
       type: http_method,
@@ -52,7 +52,7 @@ Mooment.cors = {
       }
     };
     // Inject the user token if it is available
-    var token = Mooment.user.getToken();
+    var token = ProcDoc.user.getToken();
     if ( typeof token !== "undefined" ) {
       attrs.headers.token = token;
     }

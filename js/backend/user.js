@@ -1,9 +1,9 @@
-Mooment.user = (function() {
+ProcDoc.user = (function() {
 
   var token;
 
   function authenticate(credentials, callback) {
-    Mooment.cors.makeRequest("POST", "user/login", credentials, callback);
+    ProcDoc.cors.makeRequest("POST", "user/login", credentials, callback);
   }
 
   // Gets the value of the token from the cache
@@ -31,7 +31,7 @@ Mooment.user = (function() {
   }
 
   function logInWebInterface(callback) {
-    Mooment.cors.makeRequest("GET", "user/token", undefined, callback);
+    ProcDoc.cors.makeRequest("GET", "user/token", undefined, callback);
   }
 
   /**
@@ -45,11 +45,11 @@ Mooment.user = (function() {
   }
 
   function register(credentials, callback) {
-    Mooment.cors.makeRequest("POST", "user", credentials, callback);
+    ProcDoc.cors.makeRequest("POST", "user", credentials, callback);
   }
 
   function resetPassword(params, callback) {
-    Mooment.cors.makeRequest("DELETE", "user/password", params, callback);
+    ProcDoc.cors.makeRequest("DELETE", "user/password", params, callback);
   }
 
   function logout(data, callback) {
@@ -57,9 +57,9 @@ Mooment.user = (function() {
      * Wrap the callback function so that no matter the response
      * the token gets removed anyway and the monitor is stopped
      */
-    Mooment.cors.makeRequest("POST", "user/logout", data, function() {
+    ProcDoc.cors.makeRequest("POST", "user/logout", data, function() {
       setToken(null);
-      Mooment.monitor.stop();
+      ProcDoc.monitor.stop();
       callback.apply(null, arguments);
     });
   }
