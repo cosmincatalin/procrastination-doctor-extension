@@ -63,7 +63,7 @@ ProcDoc.monitor = (function() {
     }, function(tabs) {
       for (var i = tabs.length - 1; i >= 0; i--) {
         if (tabs[i].id === tabId) {
-          chrome.idle.queryState(1000 * 60 * ProcDoc.idleTime, function(state) {
+          chrome.idle.queryState( 60 * ProcDoc.idleTime, function(state) {
             if (state === 'active') {
               console.log('Switching to active site ' + tab.url);
               // Only start monitoring once the page is completely loaded
@@ -98,9 +98,6 @@ ProcDoc.monitor = (function() {
 
   function focusChanged(state) {
     switch (state) {
-      case 506:
-      case 372:
-      case 60:
       case -1:
       case 'idle':
         console.log('Browser idle ' + state);
@@ -109,7 +106,7 @@ ProcDoc.monitor = (function() {
         break;
       case 1:
       case 'active':
-        console.log('Active ' + state);
+        console.log('Browser active ' + state);
         chrome.tabs.query({
           active: true,
           currentWindow: true
@@ -163,8 +160,7 @@ ProcDoc.monitor = (function() {
       sanitizeIntervalId = setInterval(sanitize, interval);
     }
 
-    // chrome.idle.setDetectionInterval( 15 * 60 );
-    chrome.idle.setDetectionInterval(60);
+    chrome.idle.setDetectionInterval(60 * ProcDoc.idleTime);
 
     // TODO: Move this to a function
     chrome.browserAction.setIcon({

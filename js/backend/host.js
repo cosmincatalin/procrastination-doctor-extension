@@ -60,20 +60,28 @@ ProcDoc.host = (function() {
       }
     }
 
-    // Add the new recording
-    // TODO: don't record anything shorter than 5 seconds
-    recordings.push({
-      "start": activeRecord[ACTIVE_HOST].start,
-      "finish": getValidFinish(activeRecord[ACTIVE_HOST].start, now.toISOString())
+    chrome.idle.queryState( 60 * ProcDoc.idleTime, function(state) {
+      if (state === 'active') {
+        console.log('Not idle then pushing' );
+        // Add the new recording
+        // TODO: don't record anything shorter than 5 seconds
+        recordings.push({
+          "start": activeRecord[ACTIVE_HOST].start,
+          "finish": getValidFinish(activeRecord[ACTIVE_HOST].start, now.toISOString())
+        });
+
+        console.log('Pushing ' + activeRecord[ACTIVE_HOST].host + ' start: ' + activeRecord[ACTIVE_HOST].start + ' finish: ' + getValidFinish(activeRecord[ACTIVE_HOST].start, now.toISOString()));
+
+        // We record intervals that have a maximum length, so that we
+        // don't end up having any surprises
+        var recordToSave = {};
+        recordToSave[RECORDED_HOST + activeRecord[ACTIVE_HOST].host] = JSON.stringify(recordings);
+        chrome.storage.local.set(recordToSave, callback);
+      } else {
+        console.log('Idle then not pushing' );
+      }
     });
 
-    console.log('Pushing ' + activeRecord[ACTIVE_HOST].host + ' start: ' + activeRecord[ACTIVE_HOST].start + ' finish: ' + getValidFinish(activeRecord[ACTIVE_HOST].start, now.toISOString()));
-
-    // We record intervals that have a maximum length, so that we
-    // don't end up having any surprises
-    var recordToSave = {};
-    recordToSave[RECORDED_HOST + activeRecord[ACTIVE_HOST].host] = JSON.stringify(recordings);
-    chrome.storage.local.set(recordToSave, callback);
   }
 
   /**
